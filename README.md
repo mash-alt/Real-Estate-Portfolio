@@ -1,6 +1,6 @@
 # Real Estate Portfolio Template
 
-A modern, responsive real estate portfolio website built with React, TypeScript, and React Router.
+A modern, responsive real estate portfolio website built with React, TypeScript, and React Router. Includes automated deployment with GitHub Actions.
 
 ## 🚀 Features
 
@@ -12,8 +12,61 @@ A modern, responsive real estate portfolio website built with React, TypeScript,
 - **Search Functionality**: Quick property search with multiple criteria
 - **Property Details**: Individual property pages with image galleries
 - **Team Section**: Showcase your real estate team members
-- **Contact Integration**: Direct messenger integration for client communication
+- **Contact Form**: Professional lead capture form with validation
+- **Social Media Integration**: Messenger, WhatsApp, and Instagram contact options
 - **Professional Design**: Clean, modern UI with easy-to-customize colors
+- **SEO Optimized**: Meta tags, structured data, sitemap for Google indexing
+- **GitHub Actions**: Automated build and deployment workflow
+
+## 📦 Quick Start
+
+### Option 1: Run Locally
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+### Option 2: Deploy to GitHub
+
+**Using PowerShell (Windows):**
+```powershell
+.\push-to-github.ps1
+```
+
+**Using Bash (Mac/Linux):**
+```bash
+chmod +x push-to-github.sh
+./push-to-github.sh
+```
+
+**Or manually:**
+```bash
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git push -u origin main
+```
+
+Then follow the **[GitHub Actions Setup Guide](GITHUB_ACTIONS_SETUP.md)** to configure automatic deployment.
+
+## 🌐 Deployment Options
+
+This template supports three free hosting platforms:
+
+| Platform | Best For | Setup Difficulty | Custom Domain |
+|----------|----------|------------------|---------------|
+| **GitHub Pages** | Simple portfolios | Easy | Free with GitHub Pro |
+| **Netlify** | Professional sites | Medium | ✅ Free |
+| **Vercel** | High performance | Medium | ✅ Free |
+
+See **[GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md)** for detailed instructions on each platform.
 
 ## 🎨 Design & Customization
 
