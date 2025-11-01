@@ -18,7 +18,12 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   return (
     <Link to={`/properties/${property.id}`} className="property-card">
       <div className="property-card-image">
-        <img src={property.images[0]} alt={property.title} />
+        <img 
+          src={property.images[0]} 
+          alt={property.title}
+          loading="lazy"
+          decoding="async"
+        />
         {property.featured && <span className="featured-badge">Featured</span>}
         <span className="property-type-badge">{property.type}</span>
       </div>

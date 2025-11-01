@@ -12,7 +12,12 @@ const TeamSection = () => {
           {teamMembers.map((member) => (
             <div key={member.id} className="team-card">
               <div className="team-image">
-                <img src={member.image} alt={member.name} />
+                <img 
+                  src={member.image} 
+                  alt={member.name}
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <h3>{member.name}</h3>
               <p className="team-position">{member.position}</p>

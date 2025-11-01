@@ -59,7 +59,12 @@ const PropertyDetail = () => {
       {/* Image Gallery */}
       <div className="image-gallery">
         <div className="main-image">
-          <img src={property.images[currentImageIndex]} alt={property.title} />
+          <img 
+            src={property.images[currentImageIndex]} 
+            alt={property.title}
+            loading="eager"
+            decoding="async"
+          />
           {property.images.length > 1 && (
             <>
               <button className="gallery-btn prev" onClick={prevImage}>‹</button>
@@ -80,6 +85,8 @@ const PropertyDetail = () => {
                 alt={`View ${idx + 1}`}
                 className={idx === currentImageIndex ? 'active' : ''}
                 onClick={() => setCurrentImageIndex(idx)}
+                loading="lazy"
+                decoding="async"
               />
             ))}
           </div>

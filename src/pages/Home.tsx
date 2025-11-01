@@ -79,7 +79,9 @@ const Home = () => {
             <div className="about-image">
               <img 
                 src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600" 
-                alt="About [Your Site Name]" 
+                alt="About [Your Site Name]"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>
@@ -116,7 +118,12 @@ const Home = () => {
           <div className="properties-preview">
             {recentProperties.map((property) => (
               <div key={property.id} className="property-preview-card">
-                <img src={property.images[0]} alt={property.title} />
+                <img 
+                  src={property.images[0]} 
+                  alt={property.title}
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="preview-content">
                   <h4>{property.title}</h4>
                   <p>{property.location}</p>
