@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // Uncomment and update this line if deploying to GitHub Pages:
-  // base: '/YOUR_REPO_NAME/',
+  base: 'Real-Estate-Portfolio',
   build: {
     outDir: 'dist',
     sourcemap: false,
