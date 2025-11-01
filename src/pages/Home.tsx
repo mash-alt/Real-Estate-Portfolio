@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import PropertyCard from '../components/PropertyCard';
 import TeamSection from '../components/TeamSection';
@@ -8,6 +9,28 @@ import '../styles/Home.css';
 const Home = () => {
   const featuredProperties = properties.filter(p => p.featured);
   const recentProperties = properties.slice(0, 6);
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in-visible');
+        }
+      });
+    }, observerOptions);
+
+    const fadeElements = document.querySelectorAll('.fade-in-section');
+    fadeElements.forEach(el => observer.observe(el));
+
+    return () => {
+      fadeElements.forEach(el => observer.unobserve(el));
+    };
+  }, []);
 
   return (
     <div className="home">
@@ -37,11 +60,11 @@ const Home = () => {
       </section>
 
       {/* About Section */}
-      <section className="about-section">
+      <section className="about-section fade-in-section">
         <div className="container">
           <div className="about-content">
             <div className="about-text">
-              <h2>Welcome to Prime Realty</h2>
+              <h2>Welcome to [Your Site Name]</h2>
               <p>
                 With over 15 years of experience in the Philippine real estate market, 
                 we are committed to helping you find the perfect property that matches 
@@ -56,7 +79,7 @@ const Home = () => {
             <div className="about-image">
               <img 
                 src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600" 
-                alt="About Prime Realty" 
+                alt="About [Your Site Name]" 
               />
             </div>
           </div>
@@ -64,7 +87,7 @@ const Home = () => {
       </section>
 
       {/* Search Section */}
-      <section className="search-section">
+      <section className="search-section fade-in-section">
         <div className="container">
           <h2 className="section-title">Search Your Ideal Property</h2>
           <SearchBar />
@@ -72,7 +95,7 @@ const Home = () => {
       </section>
 
       {/* Featured Properties */}
-      <section className="featured-section">
+      <section className="featured-section fade-in-section">
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Featured Properties</h2>
@@ -87,7 +110,7 @@ const Home = () => {
       </section>
 
       {/* Recent Properties */}
-      <section className="recent-section">
+      <section className="recent-section fade-in-section">
         <div className="container">
           <h2 className="section-title">Recent Listings</h2>
           <div className="properties-preview">
@@ -105,7 +128,7 @@ const Home = () => {
       </section>
 
       {/* Services Section */}
-      <section className="services-section">
+      <section className="services-section fade-in-section">
         <div className="container">
           <h2 className="section-title">Our Services</h2>
           <div className="services-grid">
@@ -134,10 +157,12 @@ const Home = () => {
       </section>
 
       {/* Team Section */}
-      <TeamSection />
+      <div className="fade-in-section">
+        <TeamSection />
+      </div>
 
       {/* CTA Section */}
-      <section className="cta-section">
+      <section className="cta-section fade-in-section">
         <div className="container">
           <h2>Ready to Find Your Perfect Property?</h2>
           <p>Connect with our team of experts today and let us help you achieve your real estate goals</p>

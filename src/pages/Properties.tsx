@@ -8,6 +8,7 @@ import '../styles/Properties.css';
 const Properties = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filteredProperties, setFilteredProperties] = useState(allProperties);
+  const [searchText, setSearchText] = useState<string>('');
   const [selectedType, setSelectedType] = useState<PropertyType | ''>('');
   const [selectedLocation, setSelectedLocation] = useState<Location | ''>('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -18,24 +19,42 @@ const Properties = () => {
   useEffect(() => {
     const typeParam = searchParams.get('type') as PropertyType | null;
     const locationParam = searchParams.get('location') as Location | null;
+    const searchParam = searchParams.get('search');
     
     if (typeParam) setSelectedType(typeParam);
     if (locationParam) setSelectedLocation(locationParam);
+    if (searchParam) setSearchText(searchParam);
+    
+    // Scroll to top when search params change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [searchParams]);
 
   useEffect(() => {
     let filtered = allProperties;
 
+    // Filter by search text
+    if (searchText) {
+      const searchLower = searchText.toLowerCase();
+      filtered = filtered.filter(p => 
+        p.title.toLowerCase().includes(searchLower) ||
+        p.description.toLowerCase().includes(searchLower) ||
+        p.features.some(f => f.toLowerCase().includes(searchLower)) ||
+        p.location.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Filter by type
     if (selectedType) {
       filtered = filtered.filter(p => p.type === selectedType);
     }
 
+    // Filter by location
     if (selectedLocation) {
       filtered = filtered.filter(p => p.location === selectedLocation);
     }
 
     setFilteredProperties(filtered);
-  }, [selectedType, selectedLocation]);
+  }, [selectedType, selectedLocation, searchText]);
 
   const handleTypeFilter = (type: PropertyType | '') => {
     setSelectedType(type);
@@ -62,6 +81,7 @@ const Properties = () => {
   const clearFilters = () => {
     setSelectedType('');
     setSelectedLocation('');
+    setSearchText('');
     setSearchParams({});
   };
 
@@ -84,6 +104,20 @@ const Properties = () => {
               ✕
             </button>
           </div>
+
+          {searchText && (
+            <div className="active-search">
+              <p>Searching for: <strong>{searchText}</strong></p>
+              <button onClick={() => {
+                setSearchText('');
+                const params = new URLSearchParams(searchParams);
+                params.delete('search');
+                setSearchParams(params);
+              }}>
+                Clear search
+              </button>
+            </div>
+          )}
 
           <div className="filter-section">
             <h3>Property Type</h3>

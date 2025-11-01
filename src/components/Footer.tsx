@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-section">
-          <h3>Prime Realty</h3>
+          <h3>[Your Site Name]</h3>
           <p>Your trusted partner in finding the perfect property in the Philippines.</p>
         </div>
         
@@ -35,7 +35,7 @@ const Footer = () => {
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Prime Realty. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} [Your Site Name]. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -5,6 +5,7 @@ import '../styles/SearchBar.css';
 
 const SearchBar = () => {
   const navigate = useNavigate();
+  const [searchText, setSearchText] = useState<string>('');
   const [searchType, setSearchType] = useState<PropertyType | ''>('');
   const [searchLocation, setSearchLocation] = useState<Location | ''>('');
   const [priceRange, setPriceRange] = useState<string>('');
@@ -15,16 +16,29 @@ const SearchBar = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
+    if (searchText) params.append('search', searchText);
     if (searchType) params.append('type', searchType);
     if (searchLocation) params.append('location', searchLocation);
     if (priceRange) params.append('priceRange', priceRange);
     
     navigate(`/properties?${params.toString()}`);
+    // Scroll to top after navigation
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
   };
 
   return (
     <div className="search-bar">
       <form onSubmit={handleSearch} className="search-form">
+        <div className="search-field search-field-wide">
+          <label>Search Keywords</label>
+          <input 
+            type="text"
+            placeholder="Search by title, description, or features..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        </div>
+
         <div className="search-field">
           <label>Property Type</label>
           <select 

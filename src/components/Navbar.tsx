@@ -18,7 +18,7 @@ const Navbar = () => {
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
           <span className="logo-icon">🏠</span>
-          <span className="logo-text">Prime Realty</span>
+          <span className="logo-text">[Your Site Name]</span>
         </Link>
 
         <button 
