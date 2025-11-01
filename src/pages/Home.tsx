@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import PropertyCard from '../components/PropertyCard';
 import TeamSection from '../components/TeamSection';
+import ContactForm from '../components/ContactForm';
 import { properties } from '../data/mockData';
 import '../styles/Home.css';
 
@@ -168,19 +169,12 @@ const Home = () => {
         <TeamSection />
       </div>
 
-      {/* CTA Section */}
-      <section className="cta-section fade-in-section">
-        <div className="container">
-          <h2>Ready to Find Your Perfect Property?</h2>
-          <p>Connect with our team of experts today and let us help you achieve your real estate goals</p>
-          <button 
-            className="cta-button"
-            onClick={() => window.open('https://m.me/YOUR_PAGE_ID', '_blank')}
-          >
-            💬 Start a Conversation
-          </button>
-        </div>
-      </section>
+      {/* Contact Form Section */}
+      <div className="fade-in-section">
+        <ContactForm />
+      </div>
+
+
     </div>
   );
 };

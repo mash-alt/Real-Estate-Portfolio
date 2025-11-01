@@ -1,0 +1,254 @@
+.contact-form-section {
+  padding: 5rem 0;
+  background-color: var(--bg-light);
+}
+
+.contact-form-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.contact-form-subtitle {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+}
+
+.contact-form {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--white);
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+}
+
+.required {
+  color: var(--accent-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-color);
+  background-color: var(--white);
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--secondary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #999;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-group select {
+  cursor: pointer;
+}
+
+.submit-message {
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.submit-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.submit-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Social Media Contact Section */
+.social-contact-section {
+  max-width: 800px;
+  margin: 3rem auto 0;
+  text-align: center;
+}
+
+.social-contact-text {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.social-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.social-icon.messenger {
+  background: linear-gradient(135deg, #00B2FF 0%, #006AFF 100%);
+  color: white;
+}
+
+.social-icon.messenger:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 106, 255, 0.4);
+}
+
+.social-icon.whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+}
+
+.social-icon.whatsapp:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
+.social-icon.instagram {
+  background: linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #FCAF45 100%);
+  color: white;
+}
+
+.social-icon.instagram:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(253, 29, 29, 0.4);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .contact-form-section {
+    padding: 3rem 0;
+  }
+
+  .contact-form-title {
+    font-size: 2rem;
+  }
+
+  .contact-form {
+    padding: 2rem 1.5rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-group.full-width {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-form {
+    padding: 1.5rem 1rem;
+  }
+
+  .contact-form-title {
+    font-size: 1.8rem;
+  }
+
+  .contact-form-subtitle {
+    font-size: 1rem;
+  }
+
+  .social-icons {
+    gap: 1.5rem;
+  }
+
+  .social-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .social-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+}
