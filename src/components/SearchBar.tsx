@@ -10,8 +10,8 @@ const SearchBar = () => {
   const [searchLocation, setSearchLocation] = useState<Location | ''>('');
   const [priceRange, setPriceRange] = useState<string>('');
 
-  const propertyTypes: PropertyType[] = ['Condominium', 'House and Lot', 'Lot-only', 'Office Space'];
-  const locations: Location[] = ['Cebu', 'Manila', 'Palawan', 'Boracay', 'Davao', 'Baguio', 'Iloilo'];
+  const propertyTypes: PropertyType[] = ['Condominium', 'House and Lot', 'Rental'];
+  const locations: Location[] = ['Cebu', 'Bohol', 'Palawan', 'Davao'];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,6 +1,6 @@
-export type PropertyType = 'Condominium' | 'House and Lot' | 'Lot-only' | 'Office Space';
+export type PropertyType = 'Condominium' | 'House and Lot' | 'Rental';
 
-export type Location = 'Cebu' | 'Manila' | 'Palawan' | 'Boracay' | 'Davao' | 'Baguio' | 'Iloilo';
+export type Location = 'Cebu' | 'Bohol' | 'Palawan' | 'Davao';
 
 export interface Property {
   id: string;

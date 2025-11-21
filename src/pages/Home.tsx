@@ -8,8 +8,9 @@ import { properties } from '../data/mockData';
 import '../styles/Home.css';
 
 const Home = () => {
-  const featuredProperties = properties.filter(p => p.featured);
-  const recentProperties = properties.slice(0, 6);
+  const handleMessengerRedirect = () => {
+    window.open('https://www.messenger.com/t/61565177813080', '_blank');
+  };
 
   useEffect(() => {
     const observerOptions = {
@@ -39,53 +40,16 @@ const Home = () => {
       <section className="hero">
         <div className="hero-overlay"></div>
         <div className="hero-content">
-          <h1 className="hero-title">Find Your Dream Property</h1>
+          <h1 className="hero-title">Explore Top Listings</h1>
           <p className="hero-subtitle">
-            Discover exceptional real estate opportunities across the Philippines
+            Find Your Dream Home with cebuhomesbyjelann.com
           </p>
-          <div className="hero-stats">
-            <div className="stat">
-              <span className="stat-number">500+</span>
-              <span className="stat-label">Properties</span>
-            </div>
-            <div className="stat">
-              <span className="stat-number">1000+</span>
-              <span className="stat-label">Happy Clients</span>
-            </div>
-            <div className="stat">
-              <span className="stat-number">15+</span>
-              <span className="stat-label">Years Experience</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="about-section fade-in-section">
-        <div className="container">
-          <div className="about-content">
-            <div className="about-text">
-              <h2>Welcome to [Your Site Name]</h2>
-              <p>
-                With over 15 years of experience in the Philippine real estate market, 
-                we are committed to helping you find the perfect property that matches 
-                your lifestyle and investment goals.
-              </p>
-              <p>
-                Our team of professional brokers and consultants provides personalized 
-                service, ensuring a smooth and successful property transaction from 
-                start to finish.
-              </p>
-            </div>
-            <div className="about-image">
-              <img 
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600" 
-                alt="About [Your Site Name]"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          </div>
+          <p className="hero-description">
+            Here at cebuhomesbyjelann.com, finding your ideal property is simple. Discover a wide range of residential real estate options tailored to your lifestyle and budget.
+          </p>
+          <button className="hero-chat-btn" onClick={handleMessengerRedirect}>
+            Let's Chat
+          </button>
         </div>
       </section>
 
@@ -97,39 +61,73 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Properties */}
-      <section className="featured-section fade-in-section">
+      {/* Smart Picks Section */}
+      <section className="smart-picks-section fade-in-section">
         <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">Featured Properties</h2>
-            <Link to="/properties" className="view-all-link">View All →</Link>
+          <h2 className="smart-picks-title">Smart Picks</h2>
+          
+          {/* Featured Condominiums */}
+          <div className="featured-category">
+            <div className="category-header">
+              <h3 className="category-title">Featured Properties: Condominium</h3>
+              <Link to="/properties?type=Condominium" className="view-all-link">View All →</Link>
+            </div>
+            <p className="category-description">
+              Handpicked for its location, value, and potential. A great find for homebuyers or investors—limited units available.
+            </p>
+            <div className="properties-grid">
+              {properties.filter(p => p.type === 'Condominium' && p.featured).slice(0, 3).map((property) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
+            </div>
           </div>
-          <div className="properties-grid">
-            {featuredProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
+
+          {/* Featured House and Lots */}
+          <div className="featured-category">
+            <div className="category-header">
+              <h3 className="category-title">Featured Homes: House and Lot</h3>
+              <Link to="/properties?type=House and Lot" className="view-all-link">View All →</Link>
+            </div>
+            <p className="category-description">
+              Discover homes designed for the comfort and happiness your family deserves. 
+              Each property offers space to grow, privacy to enjoy, and a peaceful community to call your own. 
+              Built with lasting value and thoughtful design, these homes provide the perfect place to create memories that last a lifetime.
+            </p>
+            <div className="properties-grid">
+              {properties.filter(p => p.type === 'House and Lot' && p.featured).slice(0, 3).map((property) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
+            </div>
+          </div>
+
+          {/* Featured Rentals */}
+          <div className="featured-category">
+            <div className="category-header">
+              <h3 className="category-title">Featured: Rentals</h3>
+              <Link to="/properties?type=Rental" className="view-all-link">View All →</Link>
+            </div>
+            <p className="category-description">
+              Explore a range of rental properties designed to fit your lifestyle and business needs. 
+              From modern condominiums and spacious house and lots to prime office spaces and secure warehouses, 
+              we offer options that combine convenience, value, and flexibility. 
+              Find the perfect space — whether for living, working, or growing your investment.
+            </p>
+            <div className="properties-grid">
+              {properties.filter(p => p.type === 'Rental' && p.featured).slice(0, 3).map((property) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Recent Properties */}
+      {/* Recent Listings */}
       <section className="recent-section fade-in-section">
         <div className="container">
           <h2 className="section-title">Recent Listings</h2>
-          <div className="properties-preview">
-            {recentProperties.map((property) => (
-              <div key={property.id} className="property-preview-card">
-                <img 
-                  src={property.images[0]} 
-                  alt={property.title}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="preview-content">
-                  <h4>{property.title}</h4>
-                  <p>{property.location}</p>
-                </div>
-              </div>
+          <div className="properties-grid">
+            {properties.slice(0, 6).map((property) => (
+              <PropertyCard key={property.id} property={property} />
             ))}
           </div>
         </div>
@@ -142,23 +140,33 @@ const Home = () => {
           <div className="services-grid">
             <div className="service-card">
               <div className="service-icon">🏢</div>
-              <h3>Property Sales</h3>
-              <p>Comprehensive assistance in buying and selling residential and commercial properties</p>
+              <h3>Property Sales & Investment</h3>
+              <p>Assisting clients in buying pre-selling and ready-for-occupancy projects from top developers.</p>
             </div>
             <div className="service-card">
-              <div className="service-icon">📊</div>
-              <h3>Investment Consulting</h3>
-              <p>Expert guidance on property investments and portfolio management</p>
+              <div className="service-icon">🏗️</div>
+              <h3>Pre-Selling Opportunities</h3>
+              <p>Get early access to new developments at exclusive introductory prices.</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">🏠</div>
+              <h3>Home Buying Guidance</h3>
+              <p>Step-by-step support in finding the right property for your lifestyle and budget.</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">🏦</div>
+              <h3>Bank Loan Assistance</h3>
+              <p>We connect you with trusted banks and simplify your financing process.</p>
             </div>
             <div className="service-card">
               <div className="service-icon">🔑</div>
-              <h3>Property Management</h3>
-              <p>Full-service property management solutions for landlords and investors</p>
+              <h3>Property Leasing & Management</h3>
+              <p>From finding tenants to managing rentals, we make property ownership effortless.</p>
             </div>
             <div className="service-card">
-              <div className="service-icon">💼</div>
-              <h3>Legal Assistance</h3>
-              <p>Complete legal support for property transactions and documentation</p>
+              <div className="service-icon">�</div>
+              <h3>Documentation & Titling</h3>
+              <p>Complete assistance with property documentation, title processing, and legal requirements.</p>
             </div>
           </div>
         </div>

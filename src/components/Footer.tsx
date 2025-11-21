@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-section">
-          <h3>[Your Site Name]</h3>
+          <h3>cebuhomesbyjelann.com</h3>
           <p>Your trusted partner in finding the perfect property in the Philippines.</p>
         </div>
         
@@ -14,28 +14,29 @@ const Footer = () => {
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/properties">Properties</a></li>
+            <li><a href="/careers">Careers</a></li>
             <li><a href="#about">About Us</a></li>
           </ul>
         </div>
         
         <div className="footer-section">
-          <h4>Contact</h4>
-          <p>Email: info@primerealty.com</p>
-          <p>Phone: +63 912 345 6789</p>
+          <h4>Property Types</h4>
+          <ul>
+            <li><a href="/properties?type=Condominium">Condominium</a></li>
+            <li><a href="/properties?type=House and Lot">House and Lot</a></li>
+            <li><a href="/properties?type=Rental">Rental</a></li>
+          </ul>
         </div>
         
         <div className="footer-section">
-          <h4>Follow Us</h4>
-          <div className="social-links">
-            <a href="#" aria-label="Facebook">📘</a>
-            <a href="#" aria-label="Instagram">📷</a>
-            <a href="#" aria-label="Twitter">🐦</a>
-          </div>
+          <h4>Contact</h4>
+          <p>Email: jelannestradaleyson@gmail.com</p>
+          <p>Phone: +63 9277297317</p>
         </div>
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} [Your Site Name]. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} cebuhomesbyjelann.com. All rights reserved.</p>
       </div>
     </footer>
   );

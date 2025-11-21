@@ -13,8 +13,8 @@ const Properties = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | ''>('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const propertyTypes: PropertyType[] = ['Condominium', 'House and Lot', 'Lot-only', 'Office Space'];
-  const locations: Location[] = ['Cebu', 'Manila', 'Palawan', 'Boracay', 'Davao', 'Baguio', 'Iloilo'];
+  const propertyTypes: PropertyType[] = ['Condominium', 'House and Lot', 'Rental'];
+  const locations: Location[] = ['Cebu', 'Bohol', 'Palawan', 'Davao'];
 
   useEffect(() => {
     const typeParam = searchParams.get('type') as PropertyType | null;

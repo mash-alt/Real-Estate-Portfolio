@@ -4,21 +4,18 @@ import '../styles/Navbar.css';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isPropertiesOpen, setIsPropertiesOpen] = useState(false);
+  const [isForSaleOpen, setIsForSaleOpen] = useState(false);
+  const [isLocationOpen, setIsLocationOpen] = useState(false);
 
-  const propertyTypes = ['Condominium', 'House and Lot', 'Lot-only', 'Office Space'];
-
-  const handleMessengerRedirect = () => {
-    // Replace with actual messenger link
-    window.open('https://m.me/YOUR_PAGE_ID', '_blank');
-  };
+  const forSaleTypes = ['Condominium', 'House and Lot', 'Rental'];
+  const locations = ['Cebu', 'Bohol', 'Palawan', 'Davao'];
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
           <span className="logo-icon">🏠</span>
-          <span className="logo-text">[Your Site Name]</span>
+          <span className="logo-text">cebuhomesbyjelann.com</span>
         </Link>
 
         <button 
@@ -40,21 +37,49 @@ const Navbar = () => {
           
           <li 
             className="navbar-item dropdown"
-            onMouseEnter={() => setIsPropertiesOpen(true)}
-            onMouseLeave={() => setIsPropertiesOpen(false)}
+            onMouseEnter={() => setIsLocationOpen(true)}
+            onMouseLeave={() => setIsLocationOpen(false)}
           >
-            <Link to="/properties" className="navbar-link">
-              Properties <span className="dropdown-arrow">▼</span>
-            </Link>
-            {isPropertiesOpen && (
+            <span className="navbar-link">
+              Location <span className="dropdown-arrow">▼</span>
+            </span>
+            {isLocationOpen && (
               <ul className="dropdown-menu">
-                {propertyTypes.map((type) => (
+                {locations.map((location) => (
+                  <li key={location}>
+                    <Link 
+                      to={`/properties?location=${encodeURIComponent(location)}`}
+                      className="dropdown-link"
+                      onClick={() => {
+                        setIsLocationOpen(false);
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      {location}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+
+          <li 
+            className="navbar-item dropdown"
+            onMouseEnter={() => setIsForSaleOpen(true)}
+            onMouseLeave={() => setIsForSaleOpen(false)}
+          >
+            <span className="navbar-link">
+              For Sale <span className="dropdown-arrow">▼</span>
+            </span>
+            {isForSaleOpen && (
+              <ul className="dropdown-menu">
+                {forSaleTypes.map((type) => (
                   <li key={type}>
                     <Link 
                       to={`/properties?type=${encodeURIComponent(type)}`}
                       className="dropdown-link"
                       onClick={() => {
-                        setIsPropertiesOpen(false);
+                        setIsForSaleOpen(false);
                         setIsMenuOpen(false);
                       }}
                     >
@@ -67,12 +92,13 @@ const Navbar = () => {
           </li>
 
           <li className="navbar-item">
-            <button 
-              className="navbar-button contact-btn"
-              onClick={handleMessengerRedirect}
+            <Link 
+              to="/careers" 
+              className="navbar-link"
+              onClick={() => setIsMenuOpen(false)}
             >
-              💬 Chat With Us
-            </button>
+              Careers
+            </Link>
           </li>
         </ul>
       </div>

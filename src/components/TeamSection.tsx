@@ -5,11 +5,11 @@ const TeamSection = () => {
   return (
     <section className="team-section">
       <div className="container">
-        <h2 className="section-title">Meet Our Team</h2>
-        <p className="section-subtitle">Professional real estate experts ready to help you</p>
+        <h2 className="section-title">Meet Your Agent</h2>
+        <p className="section-subtitle">Your trusted real estate professional</p>
         
         <div className="team-grid">
-          {teamMembers.map((member) => (
+          {teamMembers.slice(0, 1).map((member) => (
             <div key={member.id} className="team-card">
               <div className="team-image">
                 <img 

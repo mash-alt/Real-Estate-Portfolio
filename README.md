@@ -7,8 +7,8 @@ A modern, responsive real estate portfolio website built with React, TypeScript,
 - **Responsive Design**: Fully responsive across all devices (mobile, tablet, desktop)
 - **Property Listings**: Comprehensive property showcase with detailed information
 - **Advanced Filtering**: Filter properties by type, location, and price range
-- **Property Types**: Condominium, House and Lot, Lot-only, Office Space
-- **7 Locations**: Cebu, Manila, Palawan, Boracay, Davao, Baguio, Iloilo
+- **Property Types**: Condominium, House and Lot, Rental
+- **4 Locations**: Cebu, Bohol, Palawan, Davao
 - **Search Functionality**: Quick property search with multiple criteria
 - **Property Details**: Individual property pages with image galleries
 - **Team Section**: Showcase your real estate team members

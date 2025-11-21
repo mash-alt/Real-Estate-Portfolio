@@ -17,15 +17,15 @@
 /* Hero Section */
 .hero {
   position: relative;
-  height: 600px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600');
+  height: 650px;
+  background: url('../assets/images/Background Image 2.png');
   background-size: cover;
-  background-position: center;
+  background-position: center 40%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   color: var(--white);
+  padding-left: 5%;
 }
 
 .hero-overlay {
@@ -34,14 +34,14 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0);
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
-  text-align: center;
-  max-width: 900px;
+  text-align: left;
+  max-width: 600px;
   padding: 0 20px;
 }
 
@@ -49,72 +49,62 @@
   font-size: 3.5rem;
   margin-bottom: 1rem;
   color: var(--white);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 700;
 }
 
 .hero-subtitle {
-  font-size: 1.3rem;
-  margin-bottom: 3rem;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  flex-wrap: wrap;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: bold;
-}
-
-.stat-label {
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-/* About Section */
-.about-section {
-  padding: 5rem 0;
-}
-
-.about-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-}
-
-.about-text h2 {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 1);
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.about-text p {
-  color: var(--text-light);
-  line-height: 1.8;
-  margin-bottom: 1rem;
+.hero-description {
   font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+  max-width: 550px;
+  margin-left: 0;
+  margin-right: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.about-image {
-  border-radius: 12px;
+.hero-chat-btn {
+  padding: 0.875rem 2.5rem;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #1565c0 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+  position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-hover);
 }
 
-.about-image img {
+.hero-chat-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.hero-chat-btn:hover::before {
+  left: 100%;
+}
+
+.hero-chat-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
 }
 
 /* Search Section */
@@ -123,16 +113,48 @@
   background-color: var(--bg-light);
 }
 
-/* Featured Section */
-.featured-section {
+/* Smart Picks Section */
+.smart-picks-section {
   padding: 5rem 0;
+  background-color: white;
 }
 
-.section-header {
+.smart-picks-title {
+  text-align: center;
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 4rem;
+  font-weight: 700;
+}
+
+.featured-category {
+  margin-bottom: 5rem;
+  padding: 3rem 0;
+}
+
+.featured-category:not(:last-child) {
+  border-bottom: 2px solid var(--bg-light);
+}
+
+.category-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.category-title {
+  font-size: 2rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.category-description {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-light);
+  margin-bottom: 2.5rem;
+  max-width: 900px;
 }
 
 .view-all-link {
@@ -140,6 +162,7 @@
   font-weight: 600;
   font-size: 1.1rem;
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .view-all-link:hover {
@@ -153,51 +176,10 @@
   gap: 2rem;
 }
 
-/* Recent Section */
+/* Recent Listings Section */
 .recent-section {
-  padding: 4rem 0;
+  padding: 5rem 0;
   background-color: var(--bg-light);
-}
-
-.properties-preview {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-}
-
-.property-preview-card {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  cursor: pointer;
-}
-
-.property-preview-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-hover);
-}
-
-.property-preview-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-.preview-content {
-  padding: 1rem;
-  background-color: var(--white);
-}
-
-.preview-content h4 {
-  font-size: 1rem;
-  margin-bottom: 0.3rem;
-  color: var(--primary-color);
-}
-
-.preview-content p {
-  font-size: 0.85rem;
-  color: var(--text-light);
 }
 
 /* Services Section */
@@ -301,6 +283,14 @@
 @media (max-width: 768px) {
   .hero {
     height: 500px;
+    padding-left: 3%;
+    justify-content: center;
+  }
+
+  .hero-content {
+    text-align: center;
+    max-width: 100%;
+    padding: 0 20px;
   }
 
   .hero-title {
@@ -308,15 +298,37 @@
   }
 
   .hero-subtitle {
+    font-size: 1.4rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-chat-btn {
     font-size: 1.1rem;
+    padding: 0.875rem 2rem;
   }
 
-  .hero-stats {
-    gap: 1.5rem;
+  .smart-picks-title {
+    font-size: 2.2rem;
   }
 
-  .about-content {
-    grid-template-columns: 1fr;
+  .category-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .category-title {
+    font-size: 1.6rem;
+  }
+
+  .category-description {
+    font-size: 1rem;
   }
 
   .properties-grid {
