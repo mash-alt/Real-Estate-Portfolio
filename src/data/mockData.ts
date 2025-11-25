@@ -85,7 +85,7 @@ export const teamMembers: TeamMember[] = [
     id: '1',
     name: 'JEL ANN ESTRADA, RES',
     position: 'REAL ESTATE SALES PERSON',
-    image: '/src/assets/images/agent.png',
+    image: new URL('../assets/images/agent.png', import.meta.url).href,
     email: 'jelannestradaleyson@gmail.com',
     phone: '+63 927 729 7317',
   },
