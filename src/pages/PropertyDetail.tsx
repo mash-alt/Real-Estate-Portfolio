@@ -53,7 +53,7 @@ const PropertyDetail = () => {
   };
 
   const handleInquiry = () => {
-    window.open('https://m.me/YOUR_PAGE_ID', '_blank');
+    window.open('https://www.messenger.com/t/61565177813080', '_blank');
   };
 
   return (
