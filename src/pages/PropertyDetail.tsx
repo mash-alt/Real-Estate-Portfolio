@@ -10,6 +10,7 @@ const PropertyDetail = () => {
   const [property, setProperty] = useState<Property | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [_, setLoading] = useState(true);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -56,8 +57,34 @@ const PropertyDetail = () => {
     window.open('https://www.messenger.com/t/61565177813080', '_blank');
   };
 
+  const handleShareFacebook = () => {
+    const url = window.location.href;
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+  };
+
+  const handleShareInstagram = () => {
+    // Instagram doesn't have direct sharing URL, so we'll copy link and show instruction
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 3000);
+    });
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 3000);
+    });
+  };
+
   return (
     <div className="property-detail">
+      {copySuccess && (
+        <div className="copy-toast">
+          ✓ Link copied to clipboard!
+        </div>
+      )}
+      
       <button className="back-button" onClick={() => navigate('/properties')}>
         ← Back to Properties
       </button>
@@ -171,20 +198,26 @@ const PropertyDetail = () => {
           <div className="contact-info">
             <div className="contact-item">
               <span>📧</span>
-              <a href="mailto:info@primerealty.com">info@primerealty.com</a>
+              <a href="mailto:jelannestradaleyson@gmail.com">jelannestradaleyson@gmail.com</a>
             </div>
             <div className="contact-item">
               <span>📞</span>
-              <a href="tel:+639123456789">+63 912 345 6789</a>
+              <a href="tel:+639277297317">+63 927 729 7317</a>
             </div>
           </div>
 
           <div className="share-section">
             <h4>Share this property</h4>
             <div className="share-buttons">
-              <button aria-label="Share on Facebook">📘</button>
-              <button aria-label="Share on Twitter">🐦</button>
-              <button aria-label="Copy Link">🔗</button>
+              <button onClick={handleShareFacebook} aria-label="Share on Facebook" title="Share on Facebook">
+                📘 Facebook
+              </button>
+              <button onClick={handleShareInstagram} aria-label="Share on Instagram" title="Share on Instagram">
+                📷 Instagram
+              </button>
+              <button onClick={handleCopyLink} aria-label="Copy Link" title="Copy Link">
+                🔗 Copy Link
+              </button>
             </div>
           </div>
         </div>

@@ -2,6 +2,33 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 20px;
+  position: relative;
+}
+
+/* Toast Notification */
+.copy-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #10b981;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+  font-weight: 600;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .back-button {
@@ -299,19 +326,25 @@
 .share-buttons {
   display: flex;
   gap: 0.7rem;
+  flex-wrap: wrap;
 }
 
 .share-buttons button {
-  padding: 0.7rem;
+  padding: 0.7rem 1rem;
   background-color: var(--bg-light);
   border-radius: 8px;
-  font-size: 1.3rem;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   transition: var(--transition);
+  cursor: pointer;
 }
 
 .share-buttons button:hover {
-  background-color: var(--border-color);
-  transform: scale(1.1);
+  background-color: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
 }
 
 /* Not Found */
