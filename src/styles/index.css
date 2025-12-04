@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #066aab;
+  --primary-color: #045a8d;
   --secondary-color: #0d47a1;
   --accent-color: #e14a3c;
   --text-color: #2c3e50;
@@ -7,8 +7,8 @@
   --bg-light: #f8fcff;
   --border-color: #d1e5f4;
   --white: #ffffff;
-  --shadow: 0 4px 15px rgba(6, 106, 171, 0.12);
-  --shadow-hover: 0 8px 30px rgba(6, 106, 171, 0.2);
+  --shadow: 0 4px 15px rgba(4, 90, 141, 0.12);
+  --shadow-hover: 0 8px 30px rgba(4, 90, 141, 0.2);
   --transition: all 0.3s ease;
 }
 

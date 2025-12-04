@@ -1,13 +1,27 @@
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import PropertyCard from '../components/PropertyCard';
 import TeamSection from '../components/TeamSection';
 import ContactForm from '../components/ContactForm';
-import { properties } from '../data/mockData';
+import { getFeaturedProperties } from '../services/propertyService';
+import type { Property } from '../types';
 import '../styles/Home.css';
 
 const Home = () => {
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const data = await getFeaturedProperties();
+      setProperties(data);
+      setLoading(false);
+    };
+
+    fetchProperties();
+  }, []);
+
   const handleMessengerRedirect = () => {
     window.open('https://www.messenger.com/t/61565177813080', '_blank');
   };
@@ -76,9 +90,13 @@ const Home = () => {
               Handpicked for its location, value, and potential. A great find for homebuyers or investors—limited units available.
             </p>
             <div className="properties-grid">
-              {properties.filter(p => p.type === 'Condominium' && p.featured).slice(0, 3).map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
+              {loading ? (
+                <p>Loading properties...</p>
+              ) : (
+                properties.filter(p => p.type === 'Condominium' && p.featured).slice(0, 3).map((property) => (
+                  <PropertyCard key={property.id} property={property} />
+                ))
+              )}
             </div>
           </div>
 
@@ -94,9 +112,13 @@ const Home = () => {
               Built with lasting value and thoughtful design, these homes provide the perfect place to create memories that last a lifetime.
             </p>
             <div className="properties-grid">
-              {properties.filter(p => p.type === 'House and Lot' && p.featured).slice(0, 3).map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
+              {loading ? (
+                <p>Loading properties...</p>
+              ) : (
+                properties.filter(p => p.type === 'House and Lot' && p.featured).slice(0, 3).map((property) => (
+                  <PropertyCard key={property.id} property={property} />
+                ))
+              )}
             </div>
           </div>
 
@@ -113,9 +135,13 @@ const Home = () => {
               Find the perfect space — whether for living, working, or growing your investment.
             </p>
             <div className="properties-grid">
-              {properties.filter(p => p.type === 'Rental' && p.featured).slice(0, 3).map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
+              {loading ? (
+                <p>Loading properties...</p>
+              ) : (
+                properties.filter(p => p.type === 'Rental' && p.featured).slice(0, 3).map((property) => (
+                  <PropertyCard key={property.id} property={property} />
+                ))
+              )}
             </div>
           </div>
         </div>

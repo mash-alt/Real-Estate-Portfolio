@@ -1,7 +1,20 @@
-import { teamMembers } from '../data/mockData';
+import { useState, useEffect } from 'react';
+import { getAllTeamMembers } from '../services/propertyService';
+import type { TeamMember } from '../types';
 import '../styles/TeamSection.css';
 
 const TeamSection = () => {
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      const data = await getAllTeamMembers();
+      setTeamMembers(data);
+    };
+
+    fetchTeamMembers();
+  }, []);
+
   return (
     <section className="team-section">
       <div className="container">

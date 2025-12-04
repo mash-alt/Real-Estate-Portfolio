@@ -1,20 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
-import { properties as allProperties } from '../data/mockData';
-import type { PropertyType, Location } from '../types';
+import { getAllProperties } from '../services/propertyService';
+import type { PropertyType, Location, Property } from '../types';
 import '../styles/Properties.css';
 
 const Properties = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filteredProperties, setFilteredProperties] = useState(allProperties);
+  const [allProperties, setAllProperties] = useState<Property[]>([]);
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [searchText, setSearchText] = useState<string>('');
   const [selectedType, setSelectedType] = useState<PropertyType | ''>('');
   const [selectedLocation, setSelectedLocation] = useState<Location | ''>('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const propertyTypes: PropertyType[] = ['Condominium', 'House and Lot', 'Rental'];
   const locations: Location[] = ['Cebu', 'Bohol', 'Palawan', 'Davao'];
+
+  // Fetch properties from Firebase
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const data = await getAllProperties();
+      setAllProperties(data);
+      setFilteredProperties(data);
+      setLoading(false);
+    };
+
+    fetchProperties();
+  }, []);
 
   useEffect(() => {
     const typeParam = searchParams.get('type') as PropertyType | null;
@@ -180,7 +194,11 @@ const Properties = () => {
             </p>
           </div>
 
-          {filteredProperties.length > 0 ? (
+          {loading ? (
+            <div className="loading-message">
+              <p>Loading properties...</p>
+            </div>
+          ) : filteredProperties.length > 0 ? (
             <div className="properties-grid">
               {filteredProperties.map(property => (
                 <PropertyCard key={property.id} property={property} />

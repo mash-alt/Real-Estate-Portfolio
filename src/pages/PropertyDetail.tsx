@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { properties } from '../data/mockData';
+import { getPropertyById } from '../services/propertyService';
 import type { Property } from '../types';
 import '../styles/PropertyDetail.css';
 
@@ -9,12 +9,18 @@ const PropertyDetail = () => {
   const navigate = useNavigate();
   const [property, setProperty] = useState<Property | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [_, setLoading] = useState(true);
 
   useEffect(() => {
-    const found = properties.find(p => p.id === id);
-    if (found) {
-      setProperty(found);
-    }
+    const fetchProperty = async () => {
+      if (id) {
+        const data = await getPropertyById(id);
+        setProperty(data);
+        setLoading(false);
+      }
+    };
+
+    fetchProperty();
   }, [id]);
 
   if (!property) {

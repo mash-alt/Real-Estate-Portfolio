@@ -19,7 +19,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
     <Link to={`/properties/${property.id}`} className="property-card">
       <div className="property-card-image">
         <img 
-          src={property.images[0]} 
+          src={property.images?.[0] || '/placeholder.jpg'} 
           alt={property.title}
           loading="lazy"
           decoding="async"
@@ -39,7 +39,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           {property.bathrooms && <span>🚿 {property.bathrooms} baths</span>}
         </div>
         
-        <p className="property-description">{property.description.substring(0, 100)}...</p>
+        <p className="property-description">{property.description?.substring(0, 100) || 'No description available'}...</p>
       </div>
     </Link>
   );
