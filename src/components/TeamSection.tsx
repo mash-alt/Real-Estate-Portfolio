@@ -26,7 +26,7 @@ const TeamSection = () => {
             <div key={member.id} className="team-card">
               <div className="team-image">
                 <img 
-                  src={member.image} 
+                  src="https://res.cloudinary.com/dtsoyzdfu/image/upload/agent_axwjx5"
                   alt={member.name}
                   loading="lazy"
                   decoding="async"

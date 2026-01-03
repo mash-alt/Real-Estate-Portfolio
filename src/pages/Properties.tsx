@@ -99,11 +99,51 @@ const Properties = () => {
     setSearchParams({});
   };
 
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchText(value);
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set('search', value);
+    } else {
+      params.delete('search');
+    }
+    setSearchParams(params);
+  };
+
   return (
     <div className="properties-page">
       <div className="properties-header">
         <h1>Explore Our Properties</h1>
         <p>Find your perfect property from our extensive listings</p>
+        
+        {/* Search Bar */}
+        <div className="search-container">
+          <div className="search-input-wrapper">
+            <span className="search-icon">🔍</span>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search by title, location, description, or features..."
+              value={searchText}
+              onChange={handleSearchInput}
+            />
+            {searchText && (
+              <button 
+                className="clear-search-btn"
+                onClick={() => {
+                  setSearchText('');
+                  const params = new URLSearchParams(searchParams);
+                  params.delete('search');
+                  setSearchParams(params);
+                }}
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="properties-container">

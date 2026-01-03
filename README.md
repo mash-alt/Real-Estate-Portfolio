@@ -1,15 +1,15 @@
 # Real Estate Portfolio Template
 
-A modern, responsive real estate portfolio website built with React, TypeScript, and React Router. Includes automated deployment with GitHub Actions.
+A modern, responsive real estate portfolio website built with React, TypeScript, and React Router. Features professional image management with Cloudinary and Firebase backend.
 
 ## 🚀 Features
 
 - **Responsive Design**: Fully responsive across all devices (mobile, tablet, desktop)
 - **Property Listings**: Comprehensive property showcase with detailed information
 - **Advanced Filtering**: Filter properties by type, location, and price range
+- **Real-time Search**: Instant property search across titles, descriptions, and features
 - **Property Types**: Condominium, House and Lot, Rental
 - **4 Locations**: Cebu, Bohol, Palawan, Davao
-- **Search Functionality**: Quick property search with multiple criteria
 - **Property Details**: Individual property pages with image galleries
 - **Team Section**: Showcase your real estate team members
 - **Contact Form**: Professional lead capture form with validation
@@ -18,6 +18,15 @@ A modern, responsive real estate portfolio website built with React, TypeScript,
 - **SEO Optimized**: Meta tags, structured data, sitemap for Google indexing
 - **GitHub Actions**: Automated build and deployment workflow
 
+### 🆕 New: Admin Features
+- **🔐 Admin Panel**: Secure login for property management
+- **📸 Image Upload**: Professional Cloudinary integration for image management
+- **➕ Add Properties**: Easy-to-use form for adding new properties
+- **✏️ Edit Properties**: Update existing property information and images
+- **🖼️ Image Gallery**: Multi-image upload with drag & drop
+- **🎨 Image Optimization**: Automatic image optimization and CDN delivery
+- **☁️ Cloud Storage**: Secure image storage with Cloudinary
+
 ## 📦 Quick Start
 
 ### Option 1: Run Locally
@@ -25,6 +34,9 @@ A modern, responsive real estate portfolio website built with React, TypeScript,
 ```bash
 # Install dependencies
 npm install
+
+# Configure Cloudinary (see CLOUDINARY_QUICK_START.md)
+# Update .env with your credentials
 
 # Start development server
 npm run dev
@@ -68,6 +80,32 @@ This template supports three free hosting platforms:
 
 See **[GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md)** for detailed instructions on each platform.
 
+## ☁️ Cloudinary Image Management Setup
+
+This app uses Cloudinary for professional image management. Follow these steps:
+
+### Quick Setup (15 minutes)
+1. **Create account**: https://cloudinary.com/users/register/free
+2. **Get credentials**: Copy your Cloud Name from dashboard
+3. **Create preset**: Settings → Upload → Add preset → Set to "Unsigned"
+4. **Update .env**: Add your Cloud Name and preset name
+5. **Restart server**: `npm run dev`
+6. **Test upload**: Visit `/admin/add-property`
+
+### Detailed Guides
+- 📋 **[CLOUDINARY_CHECKLIST.md](CLOUDINARY_CHECKLIST.md)** - Step-by-step checklist
+- ⚡ **[CLOUDINARY_QUICK_START.md](CLOUDINARY_QUICK_START.md)** - Fast setup guide
+- 📖 **[CLOUDINARY_SETUP_GUIDE.md](CLOUDINARY_SETUP_GUIDE.md)** - Complete documentation
+- 🏗️ **[CLOUDINARY_ARCHITECTURE.md](CLOUDINARY_ARCHITECTURE.md)** - System architecture
+- 🎨 **[CLOUDINARY_VISUAL_GUIDE.md](CLOUDINARY_VISUAL_GUIDE.md)** - UI walkthrough
+
+### Admin Access
+- **URL**: `/admin/add-property`
+- **Username**: `admin`
+- **Password**: `admin123`
+
+⚠️ **Important**: Change these credentials before deploying to production!
+
 ## 🎨 Design & Customization
 
 ### Color Scheme
@@ -97,12 +135,19 @@ Replace `YOUR_PAGE_ID` with your Facebook Page ID in:
 - `src/pages/Home.tsx` (line 117)
 - `src/pages/PropertyDetail.tsx` (line 32)
 
-#### 3. Add/Edit Properties
+#### 3. Add Properties (via Admin Panel)
+- Visit `/admin/add-property`
+- Login with admin credentials
+- Upload images using Cloudinary
+- Fill in property details
+- Submit to Firebase
+
+#### 4. Add Properties (Manually)
 Edit `src/data/mockData.ts`:
 - Add new properties to the `properties` array
 - Update locations, prices, descriptions, images
 
-#### 4. Update Team Members
+#### 5. Update Team Members
 Edit `src/data/mockData.ts`:
 - Modify the `teamMembers` array
 - Update names, positions, photos, contact info
