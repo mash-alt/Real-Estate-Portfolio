@@ -7,7 +7,7 @@ import type { Property } from '../types';
 import { 
   Lock, Home, BarChart3, Building2, Building, Key, Star, 
   Plus, Search, Globe, LogOut, Eye, Edit, Trash2, AlertTriangle,
-  ArrowLeft, Loader2, Inbox, MapPin, Power
+  ArrowLeft, Loader2, Inbox, MapPin, Power, Settings
 } from 'lucide-react';
 import '../styles/AdminDashboard.css';
 
@@ -228,6 +228,13 @@ const AdminDashboard = () => {
           <button onClick={() => navigate('/')} className="view-site-btn">
             <Globe size={18} />
             View Site
+          </button>
+          <button 
+            onClick={() => navigate('/dashboard/settings')} 
+            className="settings-btn"
+            title="Settings"
+          >
+            <Settings size={20} />
           </button>
           <button onClick={handleLogout} className="logout-button">
             <LogOut size={18} />

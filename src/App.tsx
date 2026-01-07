@@ -8,6 +8,7 @@ import Careers from './pages/Careers'
 import AdminDashboard from './pages/AdminDashboard'
 import AddProperty from './pages/AddProperty'
 import EditProperty from './pages/EditProperty'
+import AdminSettings from './pages/AdminSettings'
 import './styles/App.css'
 
 // Layout component for public pages
@@ -27,6 +28,7 @@ function App() {
       <Route path="/properties/:id" element={<PublicLayout><PropertyDetail /></PublicLayout>} />
       <Route path="/careers" element={<PublicLayout><Careers /></PublicLayout>} />
       <Route path="/dashboard" element={<AdminDashboard />} />
+      <Route path="/dashboard/settings" element={<AdminSettings />} />
       <Route path="/dashboard/add-property" element={<AddProperty />} />
       <Route path="/edit-property/:id" element={<EditProperty />} />
     </Routes>
