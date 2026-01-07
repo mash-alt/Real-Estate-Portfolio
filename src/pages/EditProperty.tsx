@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getPropertyById, updateProperty } from '../services/propertyService';
 import ImageUploader from '../components/ImageUploader';
-import type { Property, PropertyType, Location } from '../types';
+import type { Property, PropertyType, Location, PropertyStatus } from '../types';
 import '../styles/AddProperty.css';
 
 const EditProperty = () => {
@@ -14,6 +14,7 @@ const EditProperty = () => {
     title: '',
     type: 'Condominium' as PropertyType,
     location: 'Cebu' as Location,
+    status: 'for-sale' as PropertyStatus,
     price: '',
     area: '',
     bedrooms: '',
@@ -38,6 +39,7 @@ const EditProperty = () => {
           title: property.title,
           type: property.type,
           location: property.location,
+          status: property.status || 'for-sale',
           price: property.price.toString(),
           area: property.area.toString(),
           bedrooms: property.bedrooms?.toString() || '',
@@ -90,6 +92,7 @@ const EditProperty = () => {
         title: formData.title,
         type: formData.type,
         location: formData.location,
+        status: formData.status,
         price: parseFloat(formData.price),
         area: parseFloat(formData.area),
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : undefined,
@@ -152,6 +155,23 @@ const EditProperty = () => {
               />
             </div>
 
+            <div className="form-group">
+              <label htmlFor="status">Property Status*</label>
+              <select
+                id="status"
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="preselling">Preselling Projects</option>
+                <option value="for-sale">For Sale</option>
+                <option value="for-rent">For Rent</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-row">
             <div className="form-group">
               <label htmlFor="type">Property Type*</label>
               <select

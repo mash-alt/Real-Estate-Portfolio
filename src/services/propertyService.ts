@@ -35,14 +35,31 @@ export const getPropertyById = async (id: string): Promise<Property | null> => {
   }
 };
 
+export const getActiveProperties = async (): Promise<Property[]> => {
+  try {
+    const querySnapshot = await getDocs(propertiesCollection);
+    return querySnapshot.docs
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Property))
+      .filter(property => property.isActive !== false);
+  } catch (error) {
+    console.error('Error fetching active properties:', error);
+    return [];
+  }
+};
+
 export const getFeaturedProperties = async (): Promise<Property[]> => {
   try {
     const q = query(propertiesCollection, where('featured', '==', true));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    } as Property));
+    return querySnapshot.docs
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Property))
+      .filter(property => property.isActive !== false);
   } catch (error) {
     console.error('Error fetching featured properties:', error);
     return [];

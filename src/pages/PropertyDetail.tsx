@@ -9,12 +9,13 @@ const PropertyDetail = () => {
   const navigate = useNavigate();
   const [property, setProperty] = useState<Property | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [_, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
     const fetchProperty = async () => {
       if (id) {
+        setLoading(true);
         const data = await getPropertyById(id);
         setProperty(data);
         setLoading(false);
@@ -23,6 +24,30 @@ const PropertyDetail = () => {
 
     fetchProperty();
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="property-detail-loading">
+        <div className="loading-skeleton">
+          <div className="skeleton-back-btn"></div>
+          <div className="skeleton-image"></div>
+          <div className="skeleton-content">
+            <div className="skeleton-title"></div>
+            <div className="skeleton-price"></div>
+            <div className="skeleton-text"></div>
+            <div className="skeleton-text short"></div>
+            <div className="skeleton-text"></div>
+            <div className="skeleton-grid">
+              <div className="skeleton-box"></div>
+              <div className="skeleton-box"></div>
+              <div className="skeleton-box"></div>
+              <div className="skeleton-box"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!property) {
     return (
@@ -198,7 +223,7 @@ const PropertyDetail = () => {
           <div className="contact-info">
             <div className="contact-item">
               <span>📧</span>
-              <a href="mailto:jelannestradaleyson@gmail.com">jelannestradaleyson@gmail.com</a>
+              <a href="mailto:kyleenzocatarig@gmail.com">kyleenzocatarig@gmail.com</a>
             </div>
             <div className="contact-item">
               <span>📞</span>

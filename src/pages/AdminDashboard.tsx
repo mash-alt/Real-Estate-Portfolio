@@ -1,66 +1,46 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllProperties, deleteProperty } from '../services/propertyService';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase-config';
+import { getAllProperties, deleteProperty, updateProperty } from '../services/propertyService';
 import type { Property } from '../types';
+import { 
+  Lock, Home, BarChart3, Building2, Building, Key, Star, 
+  Plus, Search, Globe, LogOut, Eye, Edit, Trash2, AlertTriangle,
+  ArrowLeft, Loader2, Inbox, MapPin, Power
+} from 'lucide-react';
 import '../styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [loginAttempts, setLoginAttempts] = useState(0);
-  const [isBlocked, setIsBlocked] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(false);
   
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [toggling, setToggling] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<string>('all');
   const [filterLocation, setFilterLocation] = useState<string>('all');
+  const [filterFeatured, setFilterFeatured] = useState<string>('all');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
 
-  // Check for existing session and rate limit on mount
+  // Check for existing Firebase Auth session
   useEffect(() => {
-    const checkSession = () => {
-      const sessionData = localStorage.getItem('adminSession');
-      if (sessionData) {
-        try {
-          const { expiry } = JSON.parse(sessionData);
-          if (Date.now() < expiry) {
-            setIsLoggedIn(true);
-          } else {
-            localStorage.removeItem('adminSession');
-          }
-        } catch (error) {
-          localStorage.removeItem('adminSession');
-        }
-      }
-      
-      // Check rate limiting
-      const blockUntil = localStorage.getItem('blockUntil');
-      if (blockUntil) {
-        const blockTime = parseInt(blockUntil);
-        if (Date.now() < blockTime) {
-          setIsBlocked(true);
-          const attempts = localStorage.getItem('loginAttempts');
-          setLoginAttempts(parseInt(attempts || '0'));
-        } else {
-          // Unblock and reset
-          localStorage.removeItem('blockUntil');
-          localStorage.removeItem('loginAttempts');
-          setIsBlocked(false);
-          setLoginAttempts(0);
-        }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
       } else {
-        const attempts = localStorage.getItem('loginAttempts');
-        if (attempts) {
-          setLoginAttempts(parseInt(attempts));
-        }
+        setIsLoggedIn(false);
       }
-    };
-    checkSession();
+    });
+    
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -76,47 +56,41 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
-  const handleLogin = (e: FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setLoginError('');
+    setLoggingIn(true);
 
-    // Check if blocked due to too many attempts
-    if (isBlocked) {
-      setLoginError('Too many failed attempts. Please try again in 15 minutes.');
-      return;
-    }
-
-    if (username === 'admin' && password === 'admin123') {
-      setIsLoggedIn(true);
-      setLoginAttempts(0);
-      localStorage.removeItem('loginAttempts');
-      localStorage.removeItem('blockUntil');
-      // Save session for 1 hour
-      const sessionData = {
-        expiry: Date.now() + (60 * 60 * 1000) // 1 hour
-      };
-      localStorage.setItem('adminSession', JSON.stringify(sessionData));
-    } else {
-      const newAttempts = loginAttempts + 1;
-      setLoginAttempts(newAttempts);
-      localStorage.setItem('loginAttempts', newAttempts.toString());
-      
-      if (newAttempts >= 5) {
-        const blockUntil = Date.now() + (15 * 60 * 1000); // Block for 15 minutes
-        localStorage.setItem('blockUntil', blockUntil.toString());
-        setIsBlocked(true);
-        setLoginError('Too many failed attempts. Please try again in 15 minutes.');
+    try {
+      // Convert 'admin' username to email format for Firebase Auth
+      const loginEmail = email.includes('@') ? email : 'kyleenzocatarig@gmail.com';
+      await signInWithEmailAndPassword(auth, loginEmail, password);
+      // onAuthStateChanged will handle setting isLoggedIn to true
+    } catch (error: any) {
+      console.error('Login error:', error);
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        setLoginError('Invalid email or password.');
+      } else if (error.code === 'auth/too-many-requests') {
+        setLoginError('Too many failed attempts. Please try again later.');
+      } else if (error.code === 'auth/invalid-credential') {
+        setLoginError('Invalid credentials. Please check your email and password.');
       } else {
-        setLoginError(`Invalid username or password. ${5 - newAttempts} attempts remaining.`);
+        setLoginError('Login failed. Please try again.');
       }
+    } finally {
+      setLoggingIn(false);
     }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUsername('');
-    setPassword('');
-    localStorage.removeItem('adminSession');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setEmail('');
+      setPassword('');
+      // onAuthStateChanged will handle setting isLoggedIn to false
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -130,6 +104,21 @@ const AdminDashboard = () => {
       alert('Failed to delete property. Please try again.');
     }
     setDeleting(false);
+  };
+
+  const handleToggleStatus = async (id: string, currentStatus: boolean | undefined) => {
+    setToggling(id);
+    const newStatus = !currentStatus;
+    const success = await updateProperty(id, { isActive: newStatus });
+    
+    if (success) {
+      setProperties(properties.map(p => 
+        p.id === id ? { ...p, isActive: newStatus } : p
+      ));
+    } else {
+      alert('Failed to update property status. Please try again.');
+    }
+    setToggling(null);
   };
 
   const formatPrice = (price: number) => {
@@ -146,8 +135,12 @@ const AdminDashboard = () => {
                          property.location.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === 'all' || property.type === filterType;
     const matchesLocation = filterLocation === 'all' || property.location === filterLocation;
+    const matchesFeatured = filterFeatured === 'all' || 
+                           (filterFeatured === 'featured' && property.featured) ||
+                           (filterFeatured === 'not-featured' && !property.featured);
+    const matchesStatus = filterStatus === 'all' || property.status === filterStatus;
     
-    return matchesSearch && matchesType && matchesLocation;
+    return matchesSearch && matchesType && matchesLocation && matchesFeatured && matchesStatus;
   });
 
   // Statistics
@@ -166,18 +159,21 @@ const AdminDashboard = () => {
         <div className="admin-login-container">
           <div className="admin-login-card">
             <div className="login-header">
-              <h1>🔐 Admin Dashboard</h1>
+              <div className="login-icon">
+                <Lock size={48} strokeWidth={2} />
+              </div>
+              <h1>Admin Dashboard</h1>
               <p>Please login to access the admin panel</p>
             </div>
             <form onSubmit={handleLogin} className="admin-login-form">
               <div className="form-group">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="email">Email or Username</label>
                 <input
                   type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter username"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter admin username or email"
                   required
                   autoFocus
                 />
@@ -194,13 +190,21 @@ const AdminDashboard = () => {
                 />
               </div>
               {loginError && <div className="error-message">{loginError}</div>}
-              <button type="submit" className="login-button">
-                Login to Dashboard
+              <button type="submit" className="login-button" disabled={loggingIn}>
+                {loggingIn ? (
+                  <>
+                    <Loader2 size={18} className="spin" />
+                    Logging in...
+                  </>
+                ) : (
+                  'Login to Dashboard'
+                )}
               </button>
             </form>
             <div className="login-footer">
               <button onClick={() => navigate('/')} className="back-home-btn">
-                ← Back to Home
+                <ArrowLeft size={16} />
+                Back to Home
               </button>
             </div>
           </div>
@@ -214,14 +218,19 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <div className="dashboard-header">
         <div className="header-content">
-          <h1>🏠 Admin Dashboard</h1>
+          <h1>
+            <Home size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '0.5rem' }} />
+            Admin Dashboard
+          </h1>
           <p>Manage your real estate properties</p>
         </div>
         <div className="header-actions">
           <button onClick={() => navigate('/')} className="view-site-btn">
-            🌐 View Site
+            <Globe size={18} />
+            View Site
           </button>
           <button onClick={handleLogout} className="logout-button">
+            <LogOut size={18} />
             Logout
           </button>
         </div>
@@ -230,38 +239,39 @@ const AdminDashboard = () => {
       {/* Statistics Cards */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon">📊</div>
+          <div className="stat-icon">
+            <BarChart3 size={36} strokeWidth={2} />
+          </div>
           <div className="stat-content">
             <div className="stat-value">{stats.total}</div>
             <div className="stat-label">Total Properties</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🏢</div>
+          <div className="stat-icon">
+            <Building2 size={36} strokeWidth={2} />
+          </div>
           <div className="stat-content">
             <div className="stat-value">{stats.condos}</div>
             <div className="stat-label">Condominiums</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🏡</div>
+          <div className="stat-icon">
+            <Building size={36} strokeWidth={2} />
+          </div>
           <div className="stat-content">
             <div className="stat-value">{stats.houses}</div>
             <div className="stat-label">House & Lots</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🏠</div>
+          <div className="stat-icon">
+            <Key size={36} strokeWidth={2} />
+          </div>
           <div className="stat-content">
             <div className="stat-value">{stats.rentals}</div>
             <div className="stat-label">Rentals</div>
-          </div>
-        </div>
-        <div className="stat-card featured">
-          <div className="stat-icon">⭐</div>
-          <div className="stat-content">
-            <div className="stat-value">{stats.featured}</div>
-            <div className="stat-label">Featured</div>
           </div>
         </div>
       </div>
@@ -272,16 +282,18 @@ const AdminDashboard = () => {
           onClick={() => navigate('/dashboard/add-property')} 
           className="add-property-btn"
         >
-          ➕ Add New Property
+          <Plus size={20} strokeWidth={2.5} />
+          Add New Property
         </button>
       </div>
 
       {/* Filters and Search */}
       <div className="filters-section">
         <div className="search-box">
+          <Search size={18} className="search-icon" />
           <input
             type="text"
-            placeholder="🔍 Search properties..."
+            placeholder="Search properties..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -300,6 +312,17 @@ const AdminDashboard = () => {
             <option value="Palawan">Palawan</option>
             <option value="Davao">Davao</option>
           </select>
+          <select value={filterFeatured} onChange={(e) => setFilterFeatured(e.target.value)}>
+            <option value="all">All Properties</option>
+            <option value="featured">Featured Only</option>
+            <option value="not-featured">Non-Featured</option>
+          </select>
+          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+            <option value="all">All Status</option>
+            <option value="preselling">Preselling</option>
+            <option value="for-sale">For Sale</option>
+            <option value="for-rent">For Rent</option>
+          </select>
         </div>
       </div>
 
@@ -311,15 +334,16 @@ const AdminDashboard = () => {
 
         {loading ? (
           <div className="loading-state">
-            <div className="spinner"></div>
+            <Loader2 size={48} className="spin" />
             <p>Loading properties...</p>
           </div>
         ) : filteredProperties.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">📭</div>
+            <Inbox size={64} strokeWidth={1.5} className="empty-icon" />
             <h3>No properties found</h3>
             <p>Try adjusting your filters or add a new property</p>
-            <button onClick={() => navigate('/admin/add-property')} className="add-first-btn">
+            <button onClick={() => navigate('/dashboard/add-property')} className="add-first-btn">
+              <Plus size={18} />
               Add Your First Property
             </button>
           </div>
@@ -354,15 +378,27 @@ const AdminDashboard = () => {
                     <td className="title-cell">
                       <div className="title-content">
                         <span className="property-title">{property.title}</span>
-                        {property.featured && <span className="featured-badge">⭐ Featured</span>}
+                        {property.featured && (
+                          <span className="featured-badge">
+                            <Star size={12} fill="currentColor" />
+                            Featured
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td>{property.type}</td>
-                    <td>📍 {property.location}</td>
+                    <td>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                        <MapPin size={16} />
+                        {property.location}
+                      </span>
+                    </td>
                     <td className="price-cell">{formatPrice(property.price)}</td>
                     <td>{property.area} sqm</td>
                     <td>
-                      <span className="status-badge active">Active</span>
+                      <span className={`status-badge ${property.isActive !== false ? 'active' : 'sold'}`}>
+                        {property.isActive !== false ? 'Active' : 'Sold'}
+                      </span>
                     </td>
                     <td className="actions-cell">
                       <button
@@ -370,21 +406,33 @@ const AdminDashboard = () => {
                         className="action-btn view-btn"
                         title="View Property"
                       >
-                        👁️
+                        <Eye size={18} />
                       </button>
                       <button
                         onClick={() => navigate(`/edit-property/${property.id}`)}
                         className="action-btn edit-btn"
                         title="Edit Property"
                       >
-                        ✏️
+                        <Edit size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleToggleStatus(property.id, property.isActive)}
+                        className={`action-btn ${property.isActive !== false ? 'deactivate-btn' : 'activate-btn'}`}
+                        title={property.isActive !== false ? 'Mark as Sold' : 'Mark as Active'}
+                        disabled={toggling === property.id}
+                      >
+                        {toggling === property.id ? (
+                          <Loader2 size={18} className="spin" />
+                        ) : (
+                          <Power size={18} />
+                        )}
                       </button>
                       <button
                         onClick={() => setDeleteConfirm(property.id)}
                         className="action-btn delete-btn"
                         title="Delete Property"
                       >
-                        🗑️
+                        <Trash2 size={18} />
                       </button>
                     </td>
                   </tr>
@@ -399,7 +447,10 @@ const AdminDashboard = () => {
       {deleteConfirm && (
         <div className="modal-overlay" onClick={() => setDeleteConfirm(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>⚠️ Delete Property</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+              <AlertTriangle size={32} strokeWidth={2} style={{ color: '#dc2626' }} />
+              <h2 style={{ margin: 0 }}>Delete Property</h2>
+            </div>
             <p>Are you sure you want to delete this property?</p>
             <p className="warning-text">This action cannot be undone.</p>
             <div className="modal-actions">
@@ -415,7 +466,17 @@ const AdminDashboard = () => {
                 className="confirm-delete-btn"
                 disabled={deleting}
               >
-                {deleting ? 'Deleting...' : 'Yes, Delete'}
+                {deleting ? (
+                  <>
+                    <Loader2 size={16} className="spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={16} />
+                    Yes, Delete
+                  </>
+                )}
               </button>
             </div>
           </div>

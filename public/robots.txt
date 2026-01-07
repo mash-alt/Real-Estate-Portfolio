@@ -2,8 +2,12 @@
 User-agent: *
 Allow: /
 
+# Block admin pages from search engines
+Disallow: /dashboard
+Disallow: /edit-property
+
 # Sitemap location
-Sitemap: https://yoursite.com/sitemap.xml
+Sitemap: https://cebuhomesbyjelann.com/sitemap.xml
 
 # Crawl-delay for polite crawling
 Crawl-delay: 1

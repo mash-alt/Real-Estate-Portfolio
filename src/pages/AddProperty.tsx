@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addProperty } from '../services/propertyService';
 import ImageUploader from '../components/ImageUploader';
-import type { Property, PropertyType, Location } from '../types';
+import type { Property, PropertyType, Location, PropertyStatus } from '../types';
 import '../styles/AddProperty.css';
 
 const AddProperty = () => {
@@ -13,6 +13,7 @@ const AddProperty = () => {
     title: '',
     type: 'Condominium' as PropertyType,
     location: 'Cebu' as Location,
+    status: 'for-sale' as PropertyStatus,
     price: '',
     area: '',
     bedrooms: '',
@@ -64,6 +65,7 @@ const AddProperty = () => {
         title: formData.title,
         type: formData.type,
         location: formData.location,
+        status: formData.status,
         price: parseFloat(formData.price),
         area: parseFloat(formData.area),
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : undefined,
@@ -72,6 +74,7 @@ const AddProperty = () => {
         features: featuresArray,
         images: propertyImages, // Use Cloudinary images
         featured: formData.featured,
+        isActive: true, // New properties are active by default
       };
 
       // Add property to Firebase
@@ -84,6 +87,7 @@ const AddProperty = () => {
           title: '',
           type: 'Condominium',
           location: 'Cebu',
+          status: 'for-sale',
           price: '',
           area: '',
           bedrooms: '',
@@ -145,6 +149,23 @@ const AddProperty = () => {
                 <option value="Condominium">Condominium</option>
                 <option value="House and Lot">House and Lot</option>
                 <option value="Rental">Rental</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="status">Property Status*</label>
+              <select
+                id="status"
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="preselling">Preselling Projects</option>
+                <option value="for-sale">For Sale</option>
+                <option value="for-rent">For Rent</option>
               </select>
             </div>
           </div>

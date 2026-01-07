@@ -10,21 +10,26 @@ import AddProperty from './pages/AddProperty'
 import EditProperty from './pages/EditProperty'
 import './styles/App.css'
 
+// Layout component for public pages
+const PublicLayout = ({ children }: { children: React.ReactNode }) => (
+  <>
+    <Navbar />
+    {children}
+    <Footer />
+  </>
+);
+
 function App() {
   return (
-    <>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/properties" element={<Properties />} />
-        <Route path="/properties/:id" element={<PropertyDetail />} />
-        <Route path="/careers" element={<Careers />} />
-        <Route path="/dashboard" element={<AdminDashboard />} />
-        <Route path="/dashboard/add-property" element={<AddProperty />} />
-        <Route path="/edit-property/:id" element={<EditProperty />} />
-      </Routes>
-      <Footer />
-    </>
+    <Routes>
+      <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+      <Route path="/properties" element={<PublicLayout><Properties /></PublicLayout>} />
+      <Route path="/properties/:id" element={<PublicLayout><PropertyDetail /></PublicLayout>} />
+      <Route path="/careers" element={<PublicLayout><Careers /></PublicLayout>} />
+      <Route path="/dashboard" element={<AdminDashboard />} />
+      <Route path="/dashboard/add-property" element={<AddProperty />} />
+      <Route path="/edit-property/:id" element={<EditProperty />} />
+    </Routes>
   )
 }
 

@@ -1,11 +1,15 @@
 export type PropertyType = 'Condominium' | 'House and Lot' | 'Rental';
 
+export type PropertyStatus = 'preselling' | 'for-sale' | 'for-rent';
+
 export type Location = 'Cebu' | 'Bohol' | 'Palawan' | 'Davao';
 
 export interface Property {
   id: string;
   title: string;
   type: PropertyType;
+  status?: PropertyStatus;
+  isActive?: boolean;
   location: Location;
   price: number;
   area: number;

@@ -4,10 +4,9 @@ import '../styles/Navbar.css';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isForSaleOpen, setIsForSaleOpen] = useState(false);
+  const [isPropertiesOpen, setIsPropertiesOpen] = useState(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
 
-  const forSaleTypes = ['Condominium', 'House and Lot', 'Rental'];
   const locations = ['Cebu', 'Bohol', 'Palawan', 'Davao'];
 
   return (
@@ -37,6 +36,56 @@ const Navbar = () => {
           
           <li 
             className="navbar-item dropdown"
+            onMouseEnter={() => setIsPropertiesOpen(true)}
+            onMouseLeave={() => setIsPropertiesOpen(false)}
+          >
+            <span className="navbar-link">
+              Properties <span className="dropdown-arrow">▼</span>
+            </span>
+            {isPropertiesOpen && (
+              <ul className="dropdown-menu">
+                <li>
+                  <Link 
+                    to="/properties?status=preselling"
+                    className="dropdown-link"
+                    onClick={() => {
+                      setIsPropertiesOpen(false);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Preselling Projects
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/properties?status=for-sale"
+                    className="dropdown-link"
+                    onClick={() => {
+                      setIsPropertiesOpen(false);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    For Sale
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/properties?status=for-rent"
+                    className="dropdown-link"
+                    onClick={() => {
+                      setIsPropertiesOpen(false);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    For Rent
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+          
+          <li 
+            className="navbar-item dropdown"
             onMouseEnter={() => setIsLocationOpen(true)}
             onMouseLeave={() => setIsLocationOpen(false)}
           >
@@ -56,34 +105,6 @@ const Navbar = () => {
                       }}
                     >
                       {location}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-
-          <li 
-            className="navbar-item dropdown"
-            onMouseEnter={() => setIsForSaleOpen(true)}
-            onMouseLeave={() => setIsForSaleOpen(false)}
-          >
-            <span className="navbar-link">
-              For Sale <span className="dropdown-arrow">▼</span>
-            </span>
-            {isForSaleOpen && (
-              <ul className="dropdown-menu">
-                {forSaleTypes.map((type) => (
-                  <li key={type}>
-                    <Link 
-                      to={`/properties?type=${encodeURIComponent(type)}`}
-                      className="dropdown-link"
-                      onClick={() => {
-                        setIsForSaleOpen(false);
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      {type}
                     </Link>
                   </li>
                 ))}

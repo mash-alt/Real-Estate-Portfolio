@@ -30,7 +30,7 @@ const Footer = () => {
         
         <div className="footer-section">
           <h4>Contact</h4>
-          <p>Email: jelannestradaleyson@gmail.com</p>
+          <p>Email: kyleenzocatarig@gmail.com</p>
           <p>Phone: +63 927 729 7317</p>
         </div>
       </div>

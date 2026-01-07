@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
-import { getAllProperties } from '../services/propertyService';
-import type { PropertyType, Location, Property } from '../types';
+import { getActiveProperties } from '../services/propertyService';
+import type { PropertyType, PropertyStatus, Location, Property } from '../types';
 import '../styles/Properties.css';
 
 const Properties = () => {
@@ -11,6 +11,7 @@ const Properties = () => {
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [searchText, setSearchText] = useState<string>('');
   const [selectedType, setSelectedType] = useState<PropertyType | ''>('');
+  const [selectedStatus, setSelectedStatus] = useState<PropertyStatus | ''>('');
   const [selectedLocation, setSelectedLocation] = useState<Location | ''>('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ const Properties = () => {
   // Fetch properties from Firebase
   useEffect(() => {
     const fetchProperties = async () => {
-      const data = await getAllProperties();
+      const data = await getActiveProperties();
       setAllProperties(data);
       setFilteredProperties(data);
       setLoading(false);
@@ -32,10 +33,12 @@ const Properties = () => {
 
   useEffect(() => {
     const typeParam = searchParams.get('type') as PropertyType | null;
+    const statusParam = searchParams.get('status') as PropertyStatus | null;
     const locationParam = searchParams.get('location') as Location | null;
     const searchParam = searchParams.get('search');
     
     if (typeParam) setSelectedType(typeParam);
+    if (statusParam) setSelectedStatus(statusParam);
     if (locationParam) setSelectedLocation(locationParam);
     if (searchParam) setSearchText(searchParam);
     
@@ -62,13 +65,18 @@ const Properties = () => {
       filtered = filtered.filter(p => p.type === selectedType);
     }
 
+    // Filter by status
+    if (selectedStatus) {
+      filtered = filtered.filter(p => p.status === selectedStatus);
+    }
+
     // Filter by location
     if (selectedLocation) {
       filtered = filtered.filter(p => p.location === selectedLocation);
     }
 
     setFilteredProperties(filtered);
-  }, [selectedType, selectedLocation, searchText]);
+  }, [allProperties, selectedType, selectedStatus, selectedLocation, searchText]);
 
   const handleTypeFilter = (type: PropertyType | '') => {
     setSelectedType(type);
@@ -77,6 +85,17 @@ const Properties = () => {
       params.set('type', type);
     } else {
       params.delete('type');
+    }
+    setSearchParams(params);
+  };
+
+  const handleStatusFilter = (status: PropertyStatus | '') => {
+    setSelectedStatus(status);
+    const params = new URLSearchParams(searchParams);
+    if (status) {
+      params.set('status', status);
+    } else {
+      params.delete('status');
     }
     setSearchParams(params);
   };
@@ -94,6 +113,7 @@ const Properties = () => {
 
   const clearFilters = () => {
     setSelectedType('');
+    setSelectedStatus('');
     setSelectedLocation('');
     setSearchText('');
     setSearchParams({});
@@ -172,6 +192,36 @@ const Properties = () => {
               </button>
             </div>
           )}
+
+          <div className="filter-section">
+            <h3>Property Status</h3>
+            <div className="filter-options">
+              <button
+                className={`filter-option ${selectedStatus === '' ? 'active' : ''}`}
+                onClick={() => handleStatusFilter('')}
+              >
+                All Status
+              </button>
+              <button
+                className={`filter-option ${selectedStatus === 'preselling' ? 'active' : ''}`}
+                onClick={() => handleStatusFilter('preselling')}
+              >
+                Preselling Projects
+              </button>
+              <button
+                className={`filter-option ${selectedStatus === 'for-sale' ? 'active' : ''}`}
+                onClick={() => handleStatusFilter('for-sale')}
+              >
+                For Sale
+              </button>
+              <button
+                className={`filter-option ${selectedStatus === 'for-rent' ? 'active' : ''}`}
+                onClick={() => handleStatusFilter('for-rent')}
+              >
+                For Rent
+              </button>
+            </div>
+          </div>
 
           <div className="filter-section">
             <h3>Property Type</h3>

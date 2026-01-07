@@ -66,7 +66,7 @@ ${formData.message || 'No message provided'}
     `.trim();
 
     const emailSubject = `New Inquiry from ${formData.firstName} ${formData.lastName}`;
-    const recipientEmail = 'jelannestradaleyson@gmail.com';
+    const recipientEmail = 'kyleenzocatarig@gmail.com';
 
     // Create mailto link
     const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
@@ -93,7 +93,7 @@ ${formData.message || 'No message provided'}
       }, 3000);
     } catch (error) {
       setIsSubmitting(false);
-      setSubmitMessage('There was an error. Please email us directly at jelannestradaleyson@gmail.com');
+      setSubmitMessage('There was an error. Please email us directly at kyleenzocatarig@gmail.com');
       setTimeout(() => setSubmitMessage(''), 5000);
     }
   };
